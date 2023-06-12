@@ -56,7 +56,7 @@ const Signin = () => {
           <button 
             data-testid="signin-button" 
             className="signinBtn" 
-            type="submit">Signin</button>
+            type="submit">Sign in</button>
         </StyledForm>
         <button>Create an account</button>
       </StyledContainer>
