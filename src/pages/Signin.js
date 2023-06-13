@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 const StyledContainer = styled.div`
@@ -11,15 +13,17 @@ const StyledContainer = styled.div`
   gap: 1.5rem;
   > button {
     width: 100%;
-    padding: 1rem;
+    padding: 1.5rem;
     border: none;
     border-radius: 1rem;
     color: white;
-    background-color: #D9D9D9;
+    background-color: powderblue;
+    transition: 0.5s;
   }
   > button:hover {
-      background-color: #838383;
+      background-color: black;
       cursor: pointer;
+      transition: 0.5s;
     }
 `
 
@@ -33,37 +37,90 @@ const StyledForm = styled.form`
       width: 100%;
     }
   }
+  >.errorMessage {
+    color: red;
+    font-size: 1rem;
+  }
   >.signinBtn {
     border-radius: 1rem;
     border: none;
-    padding: 1rem;
+    padding: 1.5rem;
     color: white;
     background-color: black;
+    transition: 0.5s;
+  }
+  >.signinBtnDisabled {
+    border-radius: 1rem;
+    border: none;
+    padding: 1.5rem;
+    color: white;
+    background-color: #838383;
+    transition: 0.5s;
   }
   >.signinBtn:hover {
+    cursor: pointer;
+  }
+  >.signinBtnDisabled:hover {
     cursor: pointer;
   }
 `
 
 const Signin = () => {
+  const [email, setEmail] = useState('');
+  const [pw, setPw] = useState('');
+  const [isDisabled, setDisabled] = useState(true);
+
+  const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@+$/i, []);
+  const pwRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]{8,}$/i, []);
+
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if(emailRegExp.test(email) && pwRegExp.test(pw)) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+    console.log(isDisabled);
+  },[email,pw,emailRegExp,pwRegExp,isDisabled]);
+
   return (
     <>
       <StyledContainer>
         <StyledForm>
           <div>
-            <label>email</label>
-            <input data-testid="email-input" placeholder="enter your email"></input>
+            <label htmlFor="email-input">email</label>
+            <input 
+              id="email-input"
+              data-testid="email-input" 
+              placeholder="enter your email"
+              value={email}
+              onChange={(e)=>{
+                setEmail(e.target.value);
+                }}></input>
           </div>
+          {emailRegExp.test(email) || email === '' ? '' : <div className="errorMessage">Invalid email address</div>}
           <div>
-            <label>password</label>
-            <input data-testid="password-input" placeholder="enter your password"></input>
+            <label htmlFor="password-input">password</label>
+            <input 
+              id="password-input"
+              data-testid="password-input" 
+              placeholder="enter your password"
+              value={pw}
+              onChange={(e)=>{
+                setPw(e.target.value);
+                }}></input>
           </div>
+          {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">Invalid password</div>}
           <button 
             data-testid="signin-button" 
-            className="signinBtn" 
-            type="submit">Sign in</button>
+            className={emailRegExp.test(email) === true && pwRegExp.test(pw) === true ? "signinBtn" : "signinBtnDisabled"} 
+            type="submit"
+            disabled={isDisabled ? true : false}
+            onClick={() => console.log('button clicked')}
+            >Sign in</button>
         </StyledForm>
-        <button>Create an account</button>
+        <button onClick={() => {navigate('/signup')}}>Create an account</button>
       </StyledContainer>
     </>
   )
