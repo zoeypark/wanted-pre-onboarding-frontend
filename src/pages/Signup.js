@@ -7,7 +7,7 @@ const StyledContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10rem;
+  padding: 0 2rem;
   gap: 1.5rem;
 `
 
@@ -16,6 +16,11 @@ const StyledForm = styled.form`
   flex-direction: column;
   width: 100%;
   gap: 2rem;
+  > div {
+    > input {
+      width: 100%;
+    }
+  }
   >.signupBtn {
     border-radius: 1rem;
     border: none;

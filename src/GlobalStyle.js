@@ -9,7 +9,7 @@ const GlobalStyles = createGlobalStyle`
  }
  body {
     margin : 0;
-    font-size:var(--main-font);
+    font-size: 1.4rem;
     font-family: 'Noto Sans KR', sans-serif;
     display:flex;
     flex-direction:row;
@@ -26,38 +26,27 @@ const GlobalStyles = createGlobalStyle`
  a, ul,ol, p, h1, h2, h3, h4, h5 {
     margin : 0;
     padding : 0;
-    color : var(--font-color);
+    color : #222222;
  }
 #root {
    width:100%;
    min-height: 100vh;
    max-width:50rem;
-   background-color: var(--white-color);
 }
 input {
-   width:100%;
    border-radius:5px;
-   border:1px solid var(--border-color);
+   border:1px solid #D9D9D9;
    padding: 1.5rem;
-   height: 4.5rem;
 }
 input:focus,textarea:focus {
    outline:none;
-   border:1px solid var(--point-color);
+   border:1px solid #838383;
 }
 label {
    font-size: 1.4rem;
-   color:var(--sub-font-color);
+   color: #777777;
    margin-bottom: .5rem;
    display: block;
-}
-textarea{
-   width:100%;
-   border-radius: 5px;
-   border:1px solid var(--border-color);
-   height: 10rem;
-   padding: 1.5rem;
-   resize: none;
 }
 `;
  
