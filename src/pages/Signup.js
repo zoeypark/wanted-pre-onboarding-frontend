@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 const StyledContainer = styled.div`
@@ -21,39 +23,91 @@ const StyledForm = styled.form`
       width: 100%;
     }
   }
+  >.errorMessage {
+    color: red;
+    font-size: 1rem;
+  }
   >.signupBtn {
     border-radius: 1rem;
     border: none;
-    padding: 1rem;
+    padding: 1.5rem;
     color: white;
     background-color: black;
+    transition: 0.5s;
+  }
+  >.signupBtnDisabled {
+    border-radius: 1rem;
+    border: none;
+    padding: 1.5rem;
+    color: white;
+    background-color: #838383;
+    transition: 0.5s;
   }
   >.signupBtn:hover {
     cursor: pointer;
-    background-color: #838383;
+  }
+  >.signupBtnDisabled:hover {
+    cursor: pointer;
   }
 `
 
 const Signup = () => {
-  return (
-    <>
-      <StyledContainer>
-        <StyledForm>
-          <div>
-            <label>email</label>
-            <input data-testid="email-input" placeholder="enter your email"></input>
-          </div>
-          <div>
-            <label>password</label>
-            <input data-testid="password-input" placeholder="enter your password"></input>
-          </div>
-          <button 
-            data-testid="signup-button"
-            className="signupBtn" 
-            type="submit">Sign up</button>
-        </StyledForm>
-      </StyledContainer>
-    </>
+    const [email, setEmail] = useState('');
+    const [pw, setPw] = useState('');
+    const [isDisabled, setDisabled] = useState(true);
+  
+    const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@+$/i, []);
+    const pwRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]{8,}$/i, []);
+  
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+      if(emailRegExp.test(email) && pwRegExp.test(pw)) {
+        setDisabled(false);
+      } else {
+        setDisabled(true);
+      }
+      console.log(isDisabled);
+    },[email,pw,emailRegExp,pwRegExp,isDisabled]);
+  
+    return (
+      <>
+        <StyledContainer>
+          <StyledForm>
+            <div>
+              <label htmlFor="email-input">email</label>
+              <input 
+                id="email-input"
+                data-testid="email-input" 
+                placeholder="enter your email"
+                value={email}
+                onChange={(e)=>{
+                  setEmail(e.target.value);
+                  }}></input>
+            </div>
+            {emailRegExp.test(email) || email === '' ? '' : <div className="errorMessage">Invalid email address</div>}
+            <div>
+              <label htmlFor="password-input">password</label>
+              <input 
+                id="password-input"
+                data-testid="password-input" 
+                placeholder="enter your password"
+                value={pw}
+                onChange={(e)=>{
+                  setPw(e.target.value);
+                  }}></input>
+            </div>
+            {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">Invalid password</div>}
+            <button 
+              data-testid="signup-button" 
+              className={emailRegExp.test(email) === true && pwRegExp.test(pw) === true ? "signupBtn" : "signupBtnDisabled"} 
+              type="submit"
+              disabled={isDisabled ? true : false}
+              onClick={() => navigate('/signin')}
+              >Sign up</button>
+          </StyledForm>
+        </StyledContainer>
+      </>
   )
 }
 
