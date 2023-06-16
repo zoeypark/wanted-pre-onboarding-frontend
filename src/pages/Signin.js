@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import axiosInstance from "../util/axios";
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -74,6 +75,30 @@ const Signin = () => {
   const pwRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]{8,}$/i, []);
 
   const navigate = useNavigate();
+
+  const signinBtnClick = async(e) => {
+    e.preventDefault();
+    try {
+      const res = await axiosInstance.post(
+        'auth/signin',
+        {
+          "email": email,
+          "password": pw
+        }
+      );
+      console.log(res);
+      const accessToken = res.data.access_token;
+      console.log(accessToken);
+      localStorage.setItem('accessToken', accessToken);
+      navigate('/todo');
+    } catch (e) {
+      console.dir(e);
+      // alert(e.response.status);
+      if(e.response.status === 401){
+        alert('Sorry, this email and password combination is not known. Please try again.')
+      }
+    }
+  }
   
   useEffect(() => {
     if(emailRegExp.test(email) && pwRegExp.test(pw)) {
@@ -117,7 +142,7 @@ const Signin = () => {
             className={emailRegExp.test(email) === true && pwRegExp.test(pw) === true ? "signinBtn" : "signinBtnDisabled"} 
             type="submit"
             disabled={isDisabled ? true : false}
-            onClick={() => console.log('button clicked')}
+            onClick={signinBtnClick}
             >Sign in</button>
         </StyledForm>
         <button onClick={() => {navigate('/signup')}}>Create an account</button>
