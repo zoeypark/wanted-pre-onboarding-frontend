@@ -70,7 +70,7 @@ const Signin = () => {
   const [pw, setPw] = useState('');
   const [isDisabled, setDisabled] = useState(true);
 
-  const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@+$/i, []);
+  const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*$/i, []);
   const pwRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]{8,}$/i, []);
 
   const navigate = useNavigate();
