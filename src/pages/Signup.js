@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import axiosInstance from "../util/axios";
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -56,10 +57,29 @@ const Signup = () => {
     const [pw, setPw] = useState('');
     const [isDisabled, setDisabled] = useState(true);
   
-    const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@+$/i, []);
+    const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*$/i, []);
     const pwRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]{8,}$/i, []);
   
     const navigate = useNavigate();
+
+    const signupBtnClick = async(e) => {
+      e.preventDefault()
+        try {
+          const res = await axiosInstance.post(
+            '/auth/signup',
+            {
+              "email": email,
+              "password": pw
+            }
+          );
+          console.log(res); 
+          alert("Congratulations! Your registration was successful. with your email address and password, you can now signin anytime.");
+          navigate('/signin', { replace: true });
+        } catch (e) {
+          console.log(e);
+          alert(e.request.response)
+        }
+    }
     
     useEffect(() => {
       if(emailRegExp.test(email) && pwRegExp.test(pw)) {
@@ -103,7 +123,7 @@ const Signup = () => {
               className={emailRegExp.test(email) === true && pwRegExp.test(pw) === true ? "signupBtn" : "signupBtnDisabled"} 
               type="submit"
               disabled={isDisabled ? true : false}
-              onClick={() => navigate('/signin')}
+              onClick={signupBtnClick}
               >Sign up</button>
           </StyledForm>
         </StyledContainer>
