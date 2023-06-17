@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import axiosInstance from "../util/axios";
@@ -54,6 +54,9 @@ const Todo = () => {
   
   const [todos, setTodos] = useState([]);
   const [newTodo,setNewTodo] = useState('');
+  const [editMode, setEditMode] = useState('');
+  const [editedTodo, setEditedTodo] = useState('');
+  const isCompletedRef = useRef(false);
 
   useEffect(()=>{
     const accessToken = localStorage.getItem("accessToken");
@@ -86,7 +89,7 @@ const Todo = () => {
     };
   }
 
-  const createTodoBtnClick = () => {
+  const addBtnClick = () => {
     createTodo();
   }
 
@@ -109,7 +112,7 @@ const Todo = () => {
     }
   }
 
-  const deleteTodoBtnClick = async(id) => {
+  const deleteBtnClick = async(id) => {
     try {
       const res = await axiosInstance.delete(
         `/todos/${id}`,
@@ -124,23 +127,78 @@ const Todo = () => {
     }
   }
 
+  const editBtnClick = (id,todo) => {
+    setEditMode(id);
+    setEditedTodo(todo);
+  };
+
+  const submitBtnClick = async(id, isCompleted) => {
+    try {
+      const res = await axiosInstance.put(
+        `todos/${id}`,
+        {
+          todo: editedTodo,
+          isCompleted: isCompleted 
+        },
+        headers
+      )
+      console.log(res);
+      if(res.status === 200) {
+        setEditMode('');
+        getTodos();
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  const checkboxClick = async(id, todo) => {
+    try {
+      const res = await axiosInstance.put(
+        `todos/${id}`,
+        {
+          todo: todo,
+          isCompleted: isCompletedRef.current
+        },
+        headers
+      )
+      console.log(res);
+      getTodos();
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  const handleIsCompletedRef = (checked) => {
+    isCompletedRef.current = checked;
+  }
+
   return (
     <>
       <StyledContainer>
         <div>
           <input data-testid="new-todo-input" placeholder="Create new todo" onChange={(e)=>setNewTodo(e.target.value)} value={newTodo}></input>
-          <button data-testid="new-todo-add-button" onClick={createTodoBtnClick}>+add</button>
+          <button data-testid="new-todo-add-button" onClick={addBtnClick}>+add</button>
         </div>
         <ul>
           {todos.map((todo)=>{
             return(
               <li key={todo.id}>
                 <label>
-                  <input type="checkbox" defaultChecked={todo.isCompleted}/>
-                  <span>{todo.todo}</span>
+                  <input type="checkbox" defaultChecked={todo.isCompleted} onChange={(e) => {
+                    handleIsCompletedRef(e.target.checked);
+                    checkboxClick(todo.id, todo.todo);
+                  }}/>
+                  {todo.id === editMode ? 
+                  <input data-testid="modify-input" defaultValue={todo.todo} onChange={(e) => setEditedTodo(e.target.value)}></input> : 
+                  <span>{todo.todo}</span>}
                 </label>
-                <button data-testid="modify-button">edit</button>
-                <button data-testid="delete-button" onClick={() => deleteTodoBtnClick(todo.id)}>delete</button>
+                  {todo.id === editMode ? 
+                  <button data-testid="submit-button" onClick={() => submitBtnClick(todo.id, todo.isCompleted)}>submit</button> :                 
+                  <button data-testid="modify-button" onClick={() => editBtnClick(todo.id, todo.todo)}>edit</button>}
+                  {todo.id === editMode ? 
+                  <button data-testid="cancel-button">cancel</button> :                 
+                  <button data-testid="delete-button" onClick={() => deleteBtnClick(todo.id)}>delete</button>}              
               </li>
             )
           })}
