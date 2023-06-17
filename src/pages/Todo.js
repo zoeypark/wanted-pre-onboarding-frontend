@@ -197,7 +197,7 @@ const Todo = () => {
                   <button data-testid="submit-button" onClick={() => submitBtnClick(todo.id, todo.isCompleted)}>submit</button> :                 
                   <button data-testid="modify-button" onClick={() => editBtnClick(todo.id, todo.todo)}>edit</button>}
                   {todo.id === editMode ? 
-                  <button data-testid="cancel-button">cancel</button> :                 
+                  <button data-testid="cancel-button" onClick={() => setEditMode('')}>cancel</button> :                 
                   <button data-testid="delete-button" onClick={() => deleteBtnClick(todo.id)}>delete</button>}              
               </li>
             )
