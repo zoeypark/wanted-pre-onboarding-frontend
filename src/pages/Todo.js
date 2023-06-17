@@ -82,10 +82,9 @@ const Todo = () => {
         '/todos',
         headers
       )
-      console.log(res.data);
       setTodos(res.data);
     } catch(e) {
-      console.log(e);
+      alert(e.message);
     };
   }
 
@@ -102,13 +101,12 @@ const Todo = () => {
         },
         headers
       )
-      console.log(res);
       if(res.status === 201) {
         getTodos();
         setNewTodo('');
       }
     } catch(e) {
-      console.log(e);
+      alert(e.message);
     }
   }
 
@@ -118,12 +116,11 @@ const Todo = () => {
         `/todos/${id}`,
         headers
       )
-      console.log(res);
       if(res.status === 204) {
         getTodos();
       }
     } catch(e) {
-      console.log(e);
+      alert(e.message);
     }
   }
 
@@ -142,19 +139,18 @@ const Todo = () => {
         },
         headers
       )
-      console.log(res);
       if(res.status === 200) {
         setEditMode('');
         getTodos();
       }
     } catch(e) {
-      console.log(e);
+      alert(e.message);
     }
   }
 
   const checkboxClick = async(id, todo) => {
     try {
-      const res = await axiosInstance.put(
+      await axiosInstance.put(
         `todos/${id}`,
         {
           todo: todo,
@@ -162,10 +158,9 @@ const Todo = () => {
         },
         headers
       )
-      console.log(res);
       getTodos();
     } catch(e) {
-      console.log(e);
+      alert(e.message);
     }
   }
 
