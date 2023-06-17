@@ -65,7 +65,7 @@ const Signup = () => {
     const signupBtnClick = async(e) => {
       e.preventDefault()
         try {
-          const res = await axiosInstance.post(
+          await axiosInstance.post(
             '/auth/signup',
             {
               "email": email,

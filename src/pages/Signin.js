@@ -90,9 +90,10 @@ const Signin = () => {
       localStorage.setItem('accessToken', accessToken);
       navigate('/todo');
     } catch (e) {
-      // alert(e.response.status);
       if(e.response.status === 401){
         alert('Sorry, this email and password combination is not known. Please try again.')
+      } else {
+        alert(e.message);
       }
     }
   }
