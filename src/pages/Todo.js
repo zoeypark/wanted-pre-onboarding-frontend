@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 const StyledContainer = styled.div`
@@ -47,6 +49,16 @@ const StyledContainer = styled.div`
 `
 
 const Todo = () => {
+  const navigate = useNavigate();
+  
+  useEffect(()=>{
+    const accessToken = localStorage.getItem("accessToken");
+    if(!accessToken) {
+      alert('You need to sign in first to access this page');
+      navigate('/signin');
+    }
+  }, [navigate]);
+
   return (
     <>
       <StyledContainer>

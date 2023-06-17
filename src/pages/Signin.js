@@ -86,13 +86,10 @@ const Signin = () => {
           "password": pw
         }
       );
-      console.log(res);
       const accessToken = res.data.access_token;
-      console.log(accessToken);
       localStorage.setItem('accessToken', accessToken);
       navigate('/todo');
     } catch (e) {
-      console.dir(e);
       // alert(e.response.status);
       if(e.response.status === 401){
         alert('Sorry, this email and password combination is not known. Please try again.')
@@ -106,8 +103,14 @@ const Signin = () => {
     } else {
       setDisabled(true);
     }
-    console.log(isDisabled);
   },[email,pw,emailRegExp,pwRegExp,isDisabled]);
+
+  useEffect(()=>{
+    const accessToken = localStorage.getItem("accessToken");
+    if(accessToken) {
+      navigate('/todo')
+    }
+  }, [navigate]);
 
   return (
     <>
