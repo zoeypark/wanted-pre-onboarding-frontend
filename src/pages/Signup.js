@@ -72,11 +72,9 @@ const Signup = () => {
               "password": pw
             }
           );
-          console.log(res); 
           alert("Congratulations! Your registration was successful. with your email address and password, you can now signin anytime.");
           navigate('/signin', { replace: true });
         } catch (e) {
-          console.log(e);
           alert(e.request.response)
         }
     }
@@ -87,8 +85,14 @@ const Signup = () => {
       } else {
         setDisabled(true);
       }
-      console.log(isDisabled);
     },[email,pw,emailRegExp,pwRegExp,isDisabled]);
+
+    useEffect(()=>{
+      const accessToken = localStorage.getItem("accessToken");
+      if(accessToken) {
+        navigate('/todo')
+      }
+    }, [navigate]);
   
     return (
       <>
