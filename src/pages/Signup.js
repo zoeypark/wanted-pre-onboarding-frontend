@@ -75,7 +75,11 @@ const Signup = () => {
           alert("Congratulations! Your registration was successful. with your email address and password, you can now signin anytime.");
           navigate('/signin', { replace: true });
         } catch (e) {
-          alert(e.request.response)
+          if(e.response.status === 400) {
+            alert(e.response.data.message);
+          } else {
+            alert(e.message);
+          }
         }
     }
     
