@@ -109,7 +109,20 @@ const Todo = () => {
     }
   }
 
-  console.log(newTodo);
+  const deleteTodoBtnClick = async(id) => {
+    try {
+      const res = await axiosInstance.delete(
+        `/todos/${id}`,
+        headers
+      )
+      console.log(res);
+      if(res.status === 204) {
+        getTodos();
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -127,7 +140,7 @@ const Todo = () => {
                   <span>{todo.todo}</span>
                 </label>
                 <button data-testid="modify-button">edit</button>
-                <button data-testid="delete-button">delete</button>
+                <button data-testid="delete-button" onClick={() => deleteTodoBtnClick(todo.id)}>delete</button>
               </li>
             )
           })}
