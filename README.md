@@ -12,8 +12,7 @@
 
 ```$ npm start```
 
-# 배포 주소
+# 프로젝트 배포 주소
 
-[프로젝트 배포 주소](todo-today-ruby.vercel.app)
-
+[프로젝트 배포 주소](https://todo-today-ruby.vercel.app/)
 

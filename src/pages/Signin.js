@@ -136,6 +136,7 @@ const Signin = () => {
               data-testid="password-input" 
               placeholder="enter your password"
               autoComplete="off"
+              type="password"
               value={pw}
               onChange={(e)=>{
                 setPw(e.target.value);
