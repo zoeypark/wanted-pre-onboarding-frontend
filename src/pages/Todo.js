@@ -9,8 +9,17 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10rem 2rem;
+  padding: 3rem 2rem;
   gap: 3rem;
+  > #header {
+    display: flex;
+    > #signoutButton {
+      color: gray;
+    }
+    > #signoutButton:hover {
+      color: #b8d4ff;
+    }
+  }
   > div {
     width: 100%;
     display: flex;
@@ -21,10 +30,11 @@ const StyledContainer = styled.div`
     > button {
       border: none;
       background-color: #fafafa;
+      color: gray;
       cursor: pointer;
     }
     > button:hover {
-      color: #d9d9d9;
+      color: black;
     }
   }
   > ul {
@@ -32,14 +42,19 @@ const StyledContainer = styled.div`
     > li {
       display: flex;
       gap: 0.5rem;
+      padding: 0.5rem;
       > label {
         width: 100%;
-        > span {
-          overflow: scroll;
+        display: flex;
+        gap: 0.5rem;
+        > #editInput {
+          flex-grow: 1;
         }
       }
       > button {
         border: none;
+        border-radius: 0.5rem;
+        transition: 0.5s;
       }
       > button:hover {
         background-color: #d9d9d9;
@@ -168,9 +183,17 @@ const Todo = () => {
     isCompletedRef.current = checked;
   }
 
+  const signoutBtnClick = () => {
+    localStorage.clear();
+    navigate('/signin')
+  }
+
   return (
     <>
       <StyledContainer>
+        <div id="header">
+          <button id="signoutButton" onClick={signoutBtnClick}>Sign out</button>
+        </div>
         <div>
           <input data-testid="new-todo-input" placeholder="Create new todo" onChange={(e)=>setNewTodo(e.target.value)} value={newTodo}></input>
           <button data-testid="new-todo-add-button" onClick={addBtnClick}>+add</button>
@@ -185,7 +208,7 @@ const Todo = () => {
                     checkboxClick(todo.id, todo.todo);
                   }}/>
                   {todo.id === editMode ? 
-                  <input data-testid="modify-input" defaultValue={todo.todo} onChange={(e) => setEditedTodo(e.target.value)}></input> : 
+                  <input id="editInput" data-testid="modify-input" defaultValue={todo.todo} onChange={(e) => setEditedTodo(e.target.value)}></input> : 
                   <span>{todo.todo}</span>}
                 </label>
                   {todo.id === editMode ? 
