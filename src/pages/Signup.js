@@ -108,6 +108,7 @@ const Signup = () => {
                 id="email-input"
                 data-testid="email-input" 
                 placeholder="enter your email"
+                autoComplete="off"
                 value={email}
                 onChange={(e)=>{
                   setEmail(e.target.value);
@@ -120,6 +121,7 @@ const Signup = () => {
                 id="password-input"
                 data-testid="password-input" 
                 placeholder="enter your password"
+                autoComplete="off"
                 value={pw}
                 onChange={(e)=>{
                   setPw(e.target.value);
