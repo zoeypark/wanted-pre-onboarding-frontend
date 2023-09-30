@@ -48,7 +48,7 @@ const StyledForm = styled.form`
     cursor: pointer;
   }
   >.signupBtnDisabled:hover {
-    cursor: pointer;
+    cursor: not-allowed;
   }
 `
 

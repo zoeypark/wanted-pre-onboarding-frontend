@@ -47,7 +47,7 @@ const StyledForm = styled.form`
     border: none;
     padding: 1.5rem;
     color: white;
-    background-color: black;
+    background-color: blue;
     transition: 0.5s;
   }
   >.signinBtnDisabled {
@@ -62,7 +62,7 @@ const StyledForm = styled.form`
     cursor: pointer;
   }
   >.signinBtnDisabled:hover {
-    cursor: pointer;
+    cursor: not-allowed;
   }
 `
 
