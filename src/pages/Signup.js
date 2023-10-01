@@ -14,6 +14,17 @@ const StyledContainer = styled.div`
   justify-content: center;
   padding: 0 2rem;
   gap: 1.5rem;
+  > div {
+    display: flex;
+    gap: 1rem;
+    >.redirect-to-signin-btn {
+    all: unset;
+    }
+    >.redirect-to-signin-btn:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
 `
 
 const StyledForm = styled.form`
@@ -26,10 +37,10 @@ const StyledForm = styled.form`
       width: 100%;
     }
     >.passwordPreview {
-    width: 2.5rem;
+      width: 2.5rem;
     position: absolute;
-    margin-top: 1.2rem;
-    right: 27.5%;
+    margin-top: 1rem;
+    margin-left: 1rem;
     }
   }
   >.errorMessage {
@@ -154,6 +165,13 @@ const Signup = () => {
               onClick={signupBtnClick}
               >Sign up</button>
           </StyledForm>
+          <div>
+            or
+          </div>
+          <div>
+            Already a member?
+            <button className="redirect-to-signin-btn" onClick={() => navigate('/signin')}>Sign in</button>
+          </div>
         </StyledContainer>
       </>
   )

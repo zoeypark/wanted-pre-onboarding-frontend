@@ -42,8 +42,8 @@ const StyledForm = styled.form`
     >.passwordPreview {
     width: 2.5rem;
     position: absolute;
-    margin-top: 1.2rem;
-    right: 27.5%;
+    margin-top: 1rem;
+    margin-left: 1rem;
     }
   }
     >.errorMessage {
@@ -143,7 +143,7 @@ const Signin = () => {
                 }}></input>
           </div>
           {emailRegExp.test(email) || email === '' ? '' : <div className="errorMessage">Invalid email address</div>}
-          <div>
+          <div className="password-input-wrapper">
             <label htmlFor="password-input">password</label>
               <input 
               id="password-input"
@@ -157,6 +157,7 @@ const Signin = () => {
                 }}></input>
               <img className="passwordPreview" onClick={eyeImageClick} alt="eye-opened" src={eyeImageClicked ? eyeOpened : eyeClosed}/>
           </div>
+          {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">Invalid password</div>}
           <button 
             data-testid="signin-button" 
             className={emailRegExp.test(email) === true && pwRegExp.test(pw) === true ? "signinBtn" : "signinBtnDisabled"} 
