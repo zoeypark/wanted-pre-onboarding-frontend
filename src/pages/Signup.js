@@ -68,7 +68,7 @@ const Signup = () => {
     const [eyeImageClicked, setClick] = useState(false);
   
     const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*$/i, []);
-    const pwRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]{8,}$/i, []);
+    const pwRegExp = useMemo(() => /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?/~]).{8,}$/i, []);
   
     const navigate = useNavigate();
 
@@ -143,7 +143,9 @@ const Signup = () => {
                   }}></input>
               <img className="passwordPreview" onClick={eyeImageClick} alt="eye-opened" src={eyeImageClicked ? eyeOpened : eyeClosed}/>
             </div>
-            {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">Invalid password</div>}
+            {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">
+              The password must contain special characters, numbers, and alphabets, and be at least 8 characters long.
+              </div>}
             <button 
               data-testid="signup-button" 
               className={emailRegExp.test(email) === true && pwRegExp.test(pw) === true ? "signupBtn" : "signupBtnDisabled"} 

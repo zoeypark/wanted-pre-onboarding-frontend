@@ -157,7 +157,6 @@ const Signin = () => {
                 }}></input>
               <img className="passwordPreview" onClick={eyeImageClick} alt="eye-opened" src={eyeImageClicked ? eyeOpened : eyeClosed}/>
           </div>
-          {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">Invalid password</div>}
           <button 
             data-testid="signin-button" 
             className={emailRegExp.test(email) === true && pwRegExp.test(pw) === true ? "signinBtn" : "signinBtnDisabled"} 
