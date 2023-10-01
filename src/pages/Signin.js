@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import axiosInstance from "../util/axios";
+import eyeOpened from "../assets/🦆 icon _eye outline_.png";
+import eyeClosed from "../assets/🦆 icon _eye outline disabled_.png"
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -11,7 +13,7 @@ const StyledContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 2rem;
-  gap: 1.5rem;
+  gap: 2rem;
   > button {
     width: 100%;
     padding: 1.5rem;
@@ -37,8 +39,14 @@ const StyledForm = styled.form`
     > input {
       width: 100%;
     }
+    >.passwordPreview {
+    width: 2.5rem;
+    position: absolute;
+    margin-top: 1.2rem;
+    right: 27.5%;
+    }
   }
-  >.errorMessage {
+    >.errorMessage {
     color: red;
     font-size: 1rem;
   }
@@ -70,6 +78,8 @@ const Signin = () => {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [isDisabled, setDisabled] = useState(true);
+
+  const [eyeImageClicked, setClick] = useState(false);
 
   const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*$/i, []);
   const pwRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]{8,}$/i, []);
@@ -113,6 +123,10 @@ const Signin = () => {
     }
   }, [navigate]);
 
+  const eyeImageClick = () => {
+    setClick(!eyeImageClicked);
+  }
+
   return (
     <>
       <StyledContainer>
@@ -131,16 +145,17 @@ const Signin = () => {
           {emailRegExp.test(email) || email === '' ? '' : <div className="errorMessage">Invalid email address</div>}
           <div>
             <label htmlFor="password-input">password</label>
-            <input 
+              <input 
               id="password-input"
               data-testid="password-input" 
               placeholder="enter your password"
               autoComplete="off"
-              type="password"
+              type={eyeImageClicked ? "text" : "password"}
               value={pw}
               onChange={(e)=>{
                 setPw(e.target.value);
                 }}></input>
+              <img className="passwordPreview" onClick={eyeImageClick} alt="eye-opened" src={eyeImageClicked ? eyeOpened : eyeClosed}/>
           </div>
           {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">Invalid password</div>}
           <button 
