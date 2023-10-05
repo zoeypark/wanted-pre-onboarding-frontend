@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import axiosInstance from "../util/axios";
+import eyeOpened from "../assets/🦆 icon _eye outline_.png";
+import eyeClosed from "../assets/🦆 icon _eye outline disabled_.png"
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -12,6 +14,17 @@ const StyledContainer = styled.div`
   justify-content: center;
   padding: 0 2rem;
   gap: 1.5rem;
+  > div {
+    display: flex;
+    gap: 1rem;
+    >.redirect-to-signin-btn {
+    all: unset;
+    }
+    >.redirect-to-signin-btn:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
 `
 
 const StyledForm = styled.form`
@@ -22,6 +35,12 @@ const StyledForm = styled.form`
   > div {
     > input {
       width: 100%;
+    }
+    >.passwordPreview {
+      width: 2.5rem;
+    position: absolute;
+    margin-top: 1rem;
+    margin-left: 1rem;
     }
   }
   >.errorMessage {
@@ -48,7 +67,7 @@ const StyledForm = styled.form`
     cursor: pointer;
   }
   >.signupBtnDisabled:hover {
-    cursor: pointer;
+    cursor: not-allowed;
   }
 `
 
@@ -56,9 +75,11 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [pw, setPw] = useState('');
     const [isDisabled, setDisabled] = useState(true);
+
+    const [eyeImageClicked, setClick] = useState(false);
   
     const emailRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*@[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]*$/i, []);
-    const pwRegExp = useMemo(() => /^[0-9a-zA-Z~!@#$%^&*()_+{}|:<>?`=,.]{8,}$/i, []);
+    const pwRegExp = useMemo(() => /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?/~]).{8,}$/i, []);
   
     const navigate = useNavigate();
 
@@ -97,6 +118,10 @@ const Signup = () => {
         navigate('/todo')
       }
     }, [navigate]);
+
+    const eyeImageClick = () => {
+      setClick(!eyeImageClicked);
+    }
   
     return (
       <>
@@ -122,12 +147,16 @@ const Signup = () => {
                 data-testid="password-input" 
                 placeholder="enter your password"
                 autoComplete="off"
+                type={eyeImageClicked ? "text" : "password"}
                 value={pw}
                 onChange={(e)=>{
                   setPw(e.target.value);
                   }}></input>
+              <img className="passwordPreview" onClick={eyeImageClick} alt="eye-opened" src={eyeImageClicked ? eyeOpened : eyeClosed}/>
             </div>
-            {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">Invalid password</div>}
+            {pwRegExp.test(pw) || pw === '' ? '' : <div className="errorMessage">
+              The password must contain special characters, numbers, and alphabets, and be at least 8 characters long.
+              </div>}
             <button 
               data-testid="signup-button" 
               className={emailRegExp.test(email) === true && pwRegExp.test(pw) === true ? "signupBtn" : "signupBtnDisabled"} 
@@ -136,6 +165,13 @@ const Signup = () => {
               onClick={signupBtnClick}
               >Sign up</button>
           </StyledForm>
+          <div>
+            or
+          </div>
+          <div>
+            Already a member?
+            <button className="redirect-to-signin-btn" onClick={() => navigate('/signin')}>Sign in</button>
+          </div>
         </StyledContainer>
       </>
   )
